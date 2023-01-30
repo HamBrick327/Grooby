@@ -190,4 +190,4 @@ async def clear(ctx):
         clearQ()
     await ctx.send("queue cleared @", ctx.author.username)
 
-bot.run("NjkzNTIzNTg4NDg5MTUwNTky.GOc3Yi.WjNvCKQzJu4ok4g50nTQ17X7H6FaIoTI2Fqvhg")
+bot.run('<your token here>')
