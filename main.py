@@ -39,7 +39,7 @@ connected = False
 def clearQ():
     for file in os.listdir(queue):
         if file.endswith(".mp3") or file.endswith(".mp4"):
-            os.remove(queue + "\\" + file)
+            os.remove(os.join(queue, file))
 
 def getAudio(url):
     ## doing it the pytube way
@@ -190,4 +190,8 @@ async def clear(ctx):
         clearQ()
     await ctx.send("queue cleared @", ctx.author.username)
 
-bot.run('<your token here>')
+@bot.command()
+async def queue(ctx):
+    ctx.send(name for name in os.listdir(queue)) ## probably doesn't work but no one looks at my github anyway so idc
+
+bot.run(os.getenv("GROOBYTOKEN"))
