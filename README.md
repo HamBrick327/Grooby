@@ -10,10 +10,12 @@ This bot is quite scuffed and breaks at some of the weirdest times.
 
 This bot downloads music and adds it to the ./queue directory, which is not part of this repo
 
-  -play <song to play>
+This is a test repo for me to learn how to use git gooder, I have a much more feature-rich bot on my personal stuff that will be committed when I learn how to use git good.
 
-  -join (BUG cannot play when bot is just joined using this command, don't use)
+  -play <song to play>
 
   -leave
 
   -clear
+
+  -queue (lists the songs in the queue)
