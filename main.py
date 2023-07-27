@@ -22,10 +22,6 @@ FEATURE refuses to play megalovania
 TODO refactor to use the youtube API directly instead of uisng the pytube library *pain*
 '''
 
-global vc
-global voice_channel
-global name
-
 
 if os.name == "posix":
     exe = 'ffmpeg'
@@ -107,14 +103,26 @@ async def play(ctx):
 
     ## if the query is megalovania because searching for megalovania isn't allowed
     if ctx.message.content.endswith("megalovania"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
-        await asyncio.sleep(.5)
+
+        if os.name == 'posix':
+            os.system("cp ./Undertale - Megalovania.mp3 ./queue/")
+        elif os.name == 'nt':
+            os.system('copy ./Undertale - Megalovania.mp3 ./queue\\')
+        
+        vc.play(disnake.FFmpegPCMAudio(os.path.join(queue, "Undertale - Megalovania.mp3"), executable=exe))
         await ctx.send("no")
         await vc.disconnect()
         return
     
         ## if the query is dsi shop theme because searching for it breaks bot
     if ctx.message.content.endswith("dsi shop theme"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
-        vc.play(disnake.FFmpegPCMAudio("Nintendo DSi Shop Theme 10 HOUR LOOP.mp3", executable=exe))
+
+        if os.name == 'posix':
+            os.system('cp ./Nintendo DSi Shop Theme 10 HOUR LOOP.mp3 ./queue/')
+        elif os.name == 'nt':
+            os.system('copy ./Nintendo DSi Shop Theme 10 HOUR LOOP.mp3 ./queue\\')
+
+        vc.play(disnake.FFmpegPCMAudio(os.path.join(queue, "Nintendo DSi Shop Theme 10 HOUR LOOP.mp3"), executable=exe))
         await ctx.send("Now playing **Nintendo DSi Shop Theme 10 HORUR LOOP**")
         while vc.is_playing() or vc.is_paused():
             await asyncio.sleep(1)
