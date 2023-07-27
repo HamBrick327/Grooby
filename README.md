@@ -21,4 +21,4 @@ This is a test repo for me to learn how to use git gooder, I have a much more fe
   -queue (lists the songs in the queue)
 
   - up
-  - down (these are admin only if you're self-hosting, but there isn't any actual code to detect admin to make that yourself)
+  - down (these are admin only if you're self-hosting, but there isn't any actual code to detect admin so make that yourself)
