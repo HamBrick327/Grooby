@@ -1,7 +1,7 @@
 from disnake.ext import commands
 from pytube import Playlist, YouTube
 from youtubesearchpython import VideosSearch
-from time import sleep
+# from time import sleep
 # import threading
 import disnake
 import os
@@ -9,15 +9,17 @@ import asyncio
 # import youtube_dl
 
 '''
-TODO add slash commands: no one actually cares about slash commands, adding them is placed on hold at best
-TODO add search command // jesus I had to retype funciton three times
-TODO add queue
-TODO add pause/resume, maybe with nested bot events
+TODO add pause/resume, maybe with nested bot events NOT WITH NESTED BOT COMMANDS
 TODO add loop command
+TODO add skip command
+TODO add reactions to avoid spam (maybe)
 
+BUG doesn't remove the last song from queue
 BUG thinks it's in a vc when it is, in fact, not
-BUG refuses to play megalovania
-BUG repeats last song in queue? need to test more to recreate it
+FEATURE refuses to play megalovania
+
+
+TODO refactor to use the youtube API directly instead of uisng the pytube library *pain*
 '''
 
 global vc
@@ -25,21 +27,22 @@ global voice_channel
 global name
 
 
+if os.name == "posix":
+    exe = 'ffmpeg'
+elif os.name == "nt":
+    exe = 'C:/ffmpeg-5.1.2-essentials_build/bin/ffmpeg.exe'
+## setting the cwd because I want to run the bot on startup and I'm too lazy to find the correct solution
+    os.chdir("Y:\\Dropbox\\Programming\\python\\chineseGroovy")
+
 cwd = os.getcwd()
-queue = os.getcwd() + "\\queue"
-connected = False
+queue = os.path.join(os.getcwd(), "queue")
+token = os.getenv('GROOBYTOKEN')
 
-# def goBot():
-#     bot.run("NjkzNTIzNTg4NDg5MTUwNTky.GOc3Yi.WjNvCKQzJu4ok4g50nTQ17X7H6FaIoTI2Fqvhg")
-
-# def checkQ():
-#     print(os.listdir("./queue"))
-#     sleep(1)
 
 def clearQ():
     for file in os.listdir(queue):
         if file.endswith(".mp3") or file.endswith(".mp4"):
-            os.remove(os.join(queue, file))
+            os.remove(os.path.join(queue, file))
 
 def getAudio(url):
     ## doing it the pytube way
@@ -68,19 +71,13 @@ bot = commands.Bot(
     intents=intents
 )
 
-# @bot.slash_command(description="Plays the test file in the user's current vc")
-# async def bruh(inter, user: disnake.User):
-    # print(user)
-    # await inter.respnse.send_message("gamer")
-
 @bot.event
 async def on_ready():
     print("bot is ready")
 
 @bot.command() ## has the bot join the user's voice channel
 async def join(ctx):
-    voice_channel = ctx.author.voice.channel
-    vc = await voice_channel.connect()
+    ctx.send("-join is no longer a valid command, use -play <song name> instead")
 
 
 @bot.command() ## plays bruh the same way the chatGTP code does, just with @bot instead of @client
@@ -89,8 +86,7 @@ async def bruh(ctx):
     voice_channel = ctx.author.voice.channel
     vc = await voice_channel.connect()
     
-    # vc.play(disnake.FFmpegPCMAudio("./bruh.mp3", executable="C:/ffmpeg-5.1.2-essentials_build/bin/ffmpeg.exe")) ## remove the executables argument when running on linux, windows 10 wouldn't let me add the sytem enviornemt variable
-    vc.play(disnake.FFmpegPCMAudio("./bruh.mp3", executable="C:/ffmpeg-5.1.2-essentials_build/bin/ffmpeg.exe"))
+    vc.play(disnake.FFmpegPCMAudio("./bruh.mp3", executable=exe))
 
     while vc.is_playing():
         await asyncio.sleep(1)
@@ -111,44 +107,76 @@ async def play(ctx):
 
     ## if the query is megalovania because searching for megalovania isn't allowed
     if ctx.message.content.endswith("megalovania"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
-        await asyncio.sleep(1.5)
+        await asyncio.sleep(.5)
         await ctx.send("no")
         await vc.disconnect()
         return
+    
+        ## if the query is dsi shop theme because searching for it breaks bot
+    if ctx.message.content.endswith("dsi shop theme"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
+        vc.play(disnake.FFmpegPCMAudio("Nintendo DSi Shop Theme 10 HOUR LOOP.mp3", executable=exe))
+        await ctx.send("Now playing **Nintendo DSi Shop Theme 10 HORUR LOOP**")
+        while vc.is_playing() or vc.is_paused():
+            await asyncio.sleep(1)
+
+    if ctx.message.content.endswith("megalovania"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
+        vc.play(disnake.FFmpegPCMAudio("Undertale - Megalovania.mp3", executable=exe))
+        await ctx.send("Now playing **Megalovania**")
+        while vc.is_playing() or vc.is_paused():
+            await asyncio.sleep(1)
 
     await ctx.send("Grooby:tm: is contemplating life...")
     name = ''
-    if not ctx.message.content.endswith(";;play"): ## if the command is followed by an argument
+    if not ctx.message.content.endswith("-play"): ## if the command is followed by an argument
         argument = ctx.message.content.split(" ", 1)[1]
         if "://" in argument:
             name = getAudio(argument)
 
             print(name, " downloaded")
+
+        elif "playlist" in argument: ## if the link is a playlist
+            playlist = Playlist(argument)
+            print(f"Number of videos in plalist: {len(playlist.video_urls)}") ################## I hope this works but it probably won't ################
+            
+            for i in range(len(playlist.video_urls)):
+                url = playlist.video_urls[i]    
+
+            getAudio(url)
         else:
             search = VideosSearch(argument, limit=1)
 
             name = getAudio(search.result()['result'][0]['link'])
+    else:
+        await ctx.send("actually give me a song to play")
 
     directory = os.listdir(queue)
 
     ## playing the generated mp3 file
-    print(queue, directory[0])
-    print(name)
+    print("name1: ", name)
+    print("directory: ", directory[0])
 
     while directory != []:
-        name = queue + "\\" + directory[0]
-        vc.play(disnake.FFmpegPCMAudio(name, executable="C:/ffmpeg-5.1.2-essentials_build/bin/ffmpeg.exe"))
+        name = os.path.join(queue, directory[0])
+        print("name2: ", name)
+        vc.play(disnake.FFmpegPCMAudio(name, executable=exe))
+        await ctx.send(f"now playing **{directory[0].replace('.mp3', '')}**")
     
-        await asyncio.sleep(5)
-        while vc.is_playing(): ## while the bot is playing audio
+        while vc.is_playing() or vc.is_paused(): ## while the bot is playing audio
             await asyncio.sleep(1)
             directory = os.listdir(queue)
 
-        os.remove(name)
+        try:
+            os.remove(name) ## avoiding the bug that might be caused by the -skip command
+        except:
+            pass
+
         directory = os.listdir(queue)
+
+        print("directory2: ", os.listdir(queue))
         
     # os.remove(name + ".mp3")
-    # directory = os.listdir(queue)
+    directory = os.listdir(queue)
+
     vc.stop()
     await vc.disconnect() ## bot disconnects when it is done playing audio
 
@@ -157,18 +185,34 @@ async def play(ctx):
 async def leave(ctx):
     vc = ctx.message.guild.voice_client
     await vc.disconnect()
-    clearQ()
     await ctx.send("left the vc")
+    await asyncio.sleep(1)
+    clearQ()
 
+@bot.command() ## same as the leave
+async def stop(ctx):
+    vc = ctx.message.guild.voice_client
+    await vc.disconnect()
+    await ctx.send("left the vc")
+    await asyncio.sleep(1)
+    clearQ()
 
-@bot.command() ## end credits
+@bot.command() ## the same as the leave command
+async def begone(ctx):
+    vc = ctx.message.guild.voice_client
+    await vc.disconnect()
+    await ctx.send("left the vc")
+    await asyncio.sleep(1)
+    clearQ()
+
+@bot.command() ## creator credits credits
 async def credits(ctx):
     credited = True
 
     if ctx.author.voice.channel != None:
         voice_channel = ctx.author.voice.channel
         vc = await voice_channel.connect()
-        vc.play(disnake.FFmpegPCMAudio(cwd + "\\credits.mp3", executable="C:/ffmpeg-5.1.2-essentials_build/bin/ffmpeg.exe"))
+        vc.play(disnake.FFmpegPCMAudio(os.path.join(cwd, "credits.mp3"), executable=exe))
         
         while vc.is_playing():
             await asyncio.sleep(1)
@@ -179,19 +223,77 @@ async def credits(ctx):
                 await asyncio.sleep(5)
                 await ctx.send("Emotional Support: Deaner")
                 await asyncio.sleep(5)
-                await ctx.send("Main Developer: HoomBrook")
+                await ctx.send("The actual programmer: HoomBrook")
                 credited = False
         vc.stop()
         await vc.disconnect()
 
-@bot.command() ## clear queue
+@bot.command(name="clear", aliases=["clearQ", "clearQueue"]) ## clear queue
 async def clear(ctx):
     if ctx.author.voice.channel == ctx.message.guild.voice_client:
         clearQ()
-    await ctx.send("queue cleared @", ctx.author.username)
+    await ctx.send("queue cleared")
+    
+@bot.command()
+async def nowplaying(ctx):
+    directory = os.listdir(queue)
+    directory = [os.path.join(os.getcwd(), "queue", f) for f in directory]
+    directory.sort(key=lambda x: os.path.getmtime(x))
+    [i.replace(os.getcwd(), '') for i in directory]
+
+    # await ctx.send(f"now playing **{directory[0].replace((queue + "\\"), '').replace('.mp3', '')}**")
 
 @bot.command()
-async def queue(ctx):
-    ctx.send(name for name in os.listdir(queue)) ## probably doesn't work but no one looks at my github anyway so idc
+async def pause(ctx):
+    vc = ctx.message.guild.voice_client
+    if type(vc) != None:
+        try:
+            vc.pause()
+            await ctx.send("paused audio")
+        except:
+            await ctx.send("nothing to pause")
+    else:
+        await ctx.send("not in vc")
 
-bot.run(os.getenv("GROOBYTOKEN"))
+@bot.command()
+async def resume(ctx):
+    vc = ctx.message.guild.voice_client
+    if type(vc) != None:
+        if vc.is_paused():
+            vc.resume()
+        else:
+            await ctx.send("Nothing to resume")
+    else:
+        await ctx.send("not in vc")
+
+@bot.command()
+async def skip(ctx):
+    vc = ctx.message.guild.voice_client
+    directory = os.listdir(queue)
+    directory = [os.path.join(os.getcwd(), "queue", f) for f in directory]
+    directory.sort(key=lambda x: os.path.getmtime(x))
+
+    vc.stop()
+    print("skip directory: ", directory)
+    os.remove(os.path.join(queue, directory[0]))
+    print("skip directory2: ", directory)
+    await ctx.send("track skipped")
+
+@bot.command()
+async def down(ctx):
+    print(ctx.message.author)
+    print(ctx.message.author.id)
+    if ctx.message.author == "HamBrick":
+        print("owner detected, bot is changing status")
+        bot.status("Bot is currently down")
+
+@bot.command()
+async def up(ctx):
+    print(ctx.message.author)
+    print(ctx.message.author.id)
+    if ctx.message.author == "HamBrick":
+        print("owner dectected, but is now up")
+        bot.status("Bot is now up!")
+
+
+bot.run(token)
