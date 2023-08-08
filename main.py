@@ -9,17 +9,17 @@ import asyncio
 # import youtube_dl
 
 '''
-TODO add pause/resume, maybe with nested bot events NOT WITH NESTED BOT COMMANDS
 TODO add loop command
-TODO add skip command
 TODO add reactions to avoid spam (maybe)
+TODO integrade filesystem.py script to fix lack of directories in the github repo
+
 
 BUG doesn't remove the last song from queue
 BUG thinks it's in a vc when it is, in fact, not
-FEATURE refuses to play megalovania
 
 
 TODO refactor to use the youtube API directly instead of uisng the pytube library *pain*
+^^ still need to do that but youtube doesn't like it ^^
 '''
 
 
@@ -90,7 +90,7 @@ async def bruh(ctx):
     vc.stop()
     await vc.disconnect()
 
-@bot.command() ## THE ACTUAL PLAY COMMAND 23:49 1/20
+@bot.command() ## THE ACTUAL PLAY COMMAND 23:49 1/20/23
 async def play(ctx):
 
 

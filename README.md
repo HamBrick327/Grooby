@@ -16,6 +16,8 @@ This bot is quite scuffed and breaks at some of the weirdest times.
 
 This bot downloads music and adds it to the ./queue directory, which is not part of this repo
 
+## testing changes is for losers
+
 
   -play <song to play>
 
