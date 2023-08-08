@@ -87,7 +87,7 @@ async def bruh(ctx):
     voice_channel = ctx.author.voice.channel
     vc = await voice_channel.connect()
     
-    vc.play(disnake.FFmpegPCMAudio("./bruh.mp3", executable=exe))
+    vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "bruh.mp3", executable=exe)))
 
     while vc.is_playing():
         await asyncio.sleep(1)
@@ -110,9 +110,9 @@ async def play(ctx):
     if ctx.message.content.endswith("megalovania"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
 
         if os.name == 'posix':
-            os.system("cp ./hardcodedAudio/Megalovania.mp3 ./queue/")
+            os.system(f"cp {os.path.join(hardcoded, 'Megalovania.mp3')} {queue}")
         elif os.name == 'nt':
-            os.system('copy ./hardcodedAudio\\Megalovania.mp3 ./queue\\')
+            os.system(f"copy {os.path.join(hardcoded, 'Megalovania.mp3')} {queue}")
         
         vc.play(disnake.FFmpegPCMAudio(os.path.join(queue, "Undertale - Megalovania.mp3"), executable=exe))
         await ctx.send("no")
@@ -123,9 +123,9 @@ async def play(ctx):
     if ctx.message.content.endswith("dsi shop theme"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
 
         if os.name == 'posix':
-            os.system('cp ./hardcodedAudio/Nintendo DSi Shop Theme 10 HOUR LOOP.mp3 ./queue/')
+            os.system(f"cp {os.path.join(hardcoded, 'Nintendo DSi Shop Theme 10 HOUR LOOP.mp3')} {queue}")
         elif os.name == 'nt':
-            os.system('copy ./hardcodedAudio\\Nintendo DSi Shop Theme 10 HOUR LOOP.mp3 ./queue\\')
+            os.system(f"copy {os.path.join(hardcoded, 'Nintendo DSi Shop Theme 10 HOUR LOOP.mp3')} {queue}")
 
         vc.play(disnake.FFmpegPCMAudio(os.path.join(queue, "Nintendo DSi Shop Theme 10 HOUR LOOP.mp3"), executable=exe))
         await ctx.send("Now playing **Nintendo DSi Shop Theme 10 HORUR LOOP**")
@@ -291,7 +291,7 @@ async def skip(ctx):
 async def down(ctx):
     print(ctx.message.author)
     print(ctx.message.author.id)
-    if ctx.message.author == "HamBrick":
+    if ctx.message.author.id == "330520485463064597":
         print("owner detected, bot is changing status")
         bot.status("Bot is currently down ):")
 
@@ -299,7 +299,7 @@ async def down(ctx):
 async def up(ctx):
     print(ctx.message.author)
     print(ctx.message.author.id)
-    if ctx.message.author == "HamBrick":
+    if ctx.message.author.id == "330520485463064597":
         print("owner dectected, but is now up")
         bot.status("Bot is now up!")
     return
