@@ -293,7 +293,8 @@ async def down(ctx):
     print(ctx.message.author.id)
     if str(ctx.message.author.id) == "330520485463064597":
         print("owner detected, bot is changing status")
-        await bot.change_presence(status=disnake.Status.idle, activity=disnake.Game(name="Grooby is down :("))
+        await bot.status("Bot is down :(")
+        # await bot.change_presence(status=disnake.Status.idle, activity=disnake.Game(name="Grooby is down :("))
 
 @bot.command()
 async def up(ctx):
