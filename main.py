@@ -115,6 +115,7 @@ async def play(ctx):
             os.system(f"copy {os.path.join(hardcoded, 'Megalovania.mp3')} {queue}")
         
         vc.play(disnake.FFmpegPCMAudio(os.path.join(queue, "Megalovania.mp3"), executable=exe))
+        await asyncio.sleep(1)
         await ctx.send("no")
         await vc.disconnect()
         return
