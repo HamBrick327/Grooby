@@ -1,3 +1,5 @@
+#!/bin/env python3
+
 import os
 
 ## check if ./queue directory exists, if not, create it

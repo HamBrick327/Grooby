@@ -1,3 +1,5 @@
+#!/bin/env python3
+
 from disnake.ext import commands
 from pytube import Playlist, YouTube
 from youtubesearchpython import VideosSearch
