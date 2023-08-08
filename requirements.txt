@@ -1,3 +1,7 @@
 disnake
 pytube
 youtube-search-python
+requests
+beautifulsoup4
+lxml
+colorama
