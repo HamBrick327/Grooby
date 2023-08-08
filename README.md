@@ -21,6 +21,8 @@ This bot downloads music and adds it to the ./queue directory, which is not part
 
 main.py assumes you have python3 set as a system path for running your python executable, if it isn't adjust accordingly because I am lazy and don't want to have to detect the python installation for every computer. That and you probably wouldn't want me automatically looking through your system files.
 
+I had a bug where the mediafire link might've expired or became otherwise unusable, might be fixed, might be something I have to fix in the futute for anyone who wants to host this scuffed bot themselves instead of any of the actual good ones
+
 ## testing changes is for losers
 
 

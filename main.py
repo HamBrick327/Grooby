@@ -220,7 +220,7 @@ async def credits(ctx):
     if ctx.author.voice.channel != None:
         voice_channel = ctx.author.voice.channel
         vc = await voice_channel.connect()
-        vc.play(disnake.FFmpegPCMAudio(os.path.join(cwd, "credits.mp3"), executable=exe))
+        vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "credits.mp3"), executable=exe))
         
         while vc.is_playing():
             await asyncio.sleep(1)
@@ -293,15 +293,15 @@ async def down(ctx):
     print(ctx.message.author.id)
     if ctx.message.author.id == "330520485463064597":
         print("owner detected, bot is changing status")
-        bot.status("Bot is currently down ):")
+        bot.change_presence(status=disnake.Status.idle, activity=disnake.Game("Grooby is down :("))
 
 @bot.command()
 async def up(ctx):
     print(ctx.message.author)
     print(ctx.message.author.id)
     if ctx.message.author.id == "330520485463064597":
-        print("owner dectected, but is now up")
-        bot.status("Bot is now up!")
+        print("owner dectected, bot is now up")
+        bot.change_presence(status=disnake.Status.online, activity=disnake.Game("Grooby is online!"))
     return
 
 @bot.command()
