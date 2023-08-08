@@ -87,7 +87,7 @@ async def bruh(ctx):
     voice_channel = ctx.author.voice.channel
     vc = await voice_channel.connect()
     
-    vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "bruh.mp3", executable=exe)))
+    vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "bruh.mp3"), executable=exe))
 
     while vc.is_playing():
         await asyncio.sleep(1)
