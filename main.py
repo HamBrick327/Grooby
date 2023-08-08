@@ -32,6 +32,7 @@ elif os.name == "nt":
 
 cwd = os.getcwd()
 queue = os.path.join(os.getcwd(), "queue")
+hardcoded = os.path.join(cwd, "hardcodedAudio")
 token = os.getenv('GROOBYTOKEN')
 
 
@@ -105,9 +106,9 @@ async def play(ctx):
     if ctx.message.content.endswith("megalovania"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
 
         if os.name == 'posix':
-            os.system("cp ./Undertale - Megalovania.mp3 ./queue/")
+            os.system("cp ./hardcodedAudio/Megalovania.mp3 ./queue/")
         elif os.name == 'nt':
-            os.system('copy ./Undertale - Megalovania.mp3 ./queue\\')
+            os.system('copy ./hardcodedAudio\\Megalovania.mp3 ./queue\\')
         
         vc.play(disnake.FFmpegPCMAudio(os.path.join(queue, "Undertale - Megalovania.mp3"), executable=exe))
         await ctx.send("no")
@@ -118,20 +119,15 @@ async def play(ctx):
     if ctx.message.content.endswith("dsi shop theme"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
 
         if os.name == 'posix':
-            os.system('cp ./Nintendo DSi Shop Theme 10 HOUR LOOP.mp3 ./queue/')
+            os.system('cp ./hardcodedAudio/Nintendo DSi Shop Theme 10 HOUR LOOP.mp3 ./queue/')
         elif os.name == 'nt':
-            os.system('copy ./Nintendo DSi Shop Theme 10 HOUR LOOP.mp3 ./queue\\')
+            os.system('copy ./hardcodedAudio\\Nintendo DSi Shop Theme 10 HOUR LOOP.mp3 ./queue\\')
 
         vc.play(disnake.FFmpegPCMAudio(os.path.join(queue, "Nintendo DSi Shop Theme 10 HOUR LOOP.mp3"), executable=exe))
         await ctx.send("Now playing **Nintendo DSi Shop Theme 10 HORUR LOOP**")
         while vc.is_playing() or vc.is_paused():
             await asyncio.sleep(1)
 
-    if ctx.message.content.endswith("megalovania"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
-        vc.play(disnake.FFmpegPCMAudio("Undertale - Megalovania.mp3", executable=exe))
-        await ctx.send("Now playing **Megalovania**")
-        while vc.is_playing() or vc.is_paused():
-            await asyncio.sleep(1)
 
     await ctx.send("Grooby:tm: is contemplating life...")
     name = ''
@@ -303,5 +299,19 @@ async def up(ctx):
         print("owner dectected, but is now up")
         bot.status("Bot is now up!")
 
+@bot.command() ## the same as the leave command
+async def jace(ctx):
+    clearQ()
+
+    if ctx.author.voice.channel != None:
+        voice_channel = ctx.author.voice.channel
+        vc = await voice_channel.connect()
+        vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "jace.mp3"), executable=exe))
+        
+        while vc.is_playing():
+            await asyncio.sleep(1)
+
+        vc.stop()
+        await vc.disconnect()
 
 bot.run(token)
