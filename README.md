@@ -6,7 +6,7 @@ Use python3 -m pip install -r requirements.txt to install dependencies
 
 The filesystem.py script should run automatically on first boot, if there is not a ./queue directory then run it manually.
 
-mf-dl is not mine, find it at *https://gitgud.io/Pyxia/mf-dl.git* was very useful to me and getting around the github file size limit
+# mf-dl is not mine, find it at *https://gitgud.io/Pyxia/mf-dl.git* was very useful to me and getting around the github file size limit
 
 I am aware this bot uses a library that is no longer being supported
 
@@ -22,6 +22,9 @@ This bot downloads music and adds it to the ./queue directory, which is not part
   -play <song to play>
 
   -leave
+    -begone
+    -stop
+    -leave
 
   -clear
 
@@ -31,3 +34,5 @@ This bot downloads music and adds it to the ./queue directory, which is not part
   -down (these are admin only if you're self-hosting, but there isn't any actual code to detect admin so make that yourself)
 
   -jace (designed to make fun of my friend who constantly plays tiktoks during match queues)
+
+  -github (links to the github repos)

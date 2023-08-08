@@ -289,7 +289,7 @@ async def down(ctx):
     print(ctx.message.author.id)
     if ctx.message.author == "HamBrick":
         print("owner detected, bot is changing status")
-        bot.status("Bot is currently down")
+        bot.status("Bot is currently down ):")
 
 @bot.command()
 async def up(ctx):
@@ -298,8 +298,9 @@ async def up(ctx):
     if ctx.message.author == "HamBrick":
         print("owner dectected, but is now up")
         bot.status("Bot is now up!")
+    return
 
-@bot.command() ## the same as the leave command
+@bot.command()
 async def jace(ctx):
     clearQ()
 
@@ -313,5 +314,11 @@ async def jace(ctx):
 
         vc.stop()
         await vc.disconnect()
+    return
+
+@bot.command()
+async def github(ctx):
+    await ctx.send("https://github.com/HamBrick327/Grooby")
+    return
 
 bot.run(token)
