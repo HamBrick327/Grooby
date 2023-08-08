@@ -293,7 +293,7 @@ async def down(ctx):
     print(ctx.message.author.id)
     if ctx.message.author.id == "330520485463064597":
         print("owner detected, bot is changing status")
-        bot.change_presence(status=disnake.Status.idle, activity=disnake.Game("Grooby is down :("))
+        await bot.change_presence(status=disnake.Status.idle, activity=disnake.Game(name="Grooby is down :("))
 
 @bot.command()
 async def up(ctx):
@@ -301,8 +301,8 @@ async def up(ctx):
     print(ctx.message.author.id)
     if ctx.message.author.id == "330520485463064597":
         print("owner dectected, bot is now up")
-        bot.change_presence(status=disnake.Status.online, activity=disnake.Game("Grooby is online!"))
-    return
+        await bot.change_presence(status=disnake.Status.online, activity=disnake.Game(name="Grooby is online!"))
+        #await bot.change_presence(activity=discord.Game(name="a game"))
 
 @bot.command()
 async def jace(ctx):
