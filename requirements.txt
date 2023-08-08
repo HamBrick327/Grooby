@@ -1,0 +1,7 @@
+requests
+beautifulsoup4
+lxml
+colorama
+disnake
+pytube
+youtube-search-python
