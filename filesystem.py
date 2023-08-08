@@ -9,7 +9,7 @@ if not os.path.exists("./queue"):
     os.system('wget "https://www.mediafire.com/file/ow8hzyoevukxwkj/hardcodedAudio.zip/file"')
 
     soup = BeautifulSoup('file', 'html.parser')
-    button = soup.find('a', id="downloadbutton", href=True)
+    button = soup.find(id="downloadbutton", href=True)
     os.system(f"wget {button['href']}")
     
 
