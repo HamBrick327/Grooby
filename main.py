@@ -182,6 +182,8 @@ async def play(ctx):
             if not looping:
                 print(looping)
                 os.remove(name) ## avoiding the bug that might be caused by the -skip command
+            else:
+                directory = directory[1:] + directory[0]
         except:
             pass
 
@@ -323,7 +325,7 @@ async def jace(ctx): ############### change
 
     voice_channel = ctx.author.voice.channel
     vc = await voice_channel.connect()    
-    
+
     if ctx.author.voice.channel != None:
         vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "jace.mp3"), executable=exe))
         
