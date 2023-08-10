@@ -342,7 +342,7 @@ async def loop(ctx):
     looping = True
 
 @bot.command()
-async def loop(ctx):
+async def unloop(ctx):
     global looping ####### This is important and I'm an idiot
     looping = False
 
