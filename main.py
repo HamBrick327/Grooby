@@ -293,6 +293,7 @@ async def resume(ctx):
 @bot.command()
 async def skip(ctx):
     global vc
+    global looping
 
     directory = os.listdir(queue)
     directory = [os.path.join(os.getcwd(), "queue", f) for f in directory]
@@ -300,7 +301,8 @@ async def skip(ctx):
 
     vc.stop()
     print("skip directory: ", directory)
-    os.remove(os.path.join(queue, directory[0]))
+    if not looping:
+        os.remove(os.path.join(queue, directory[0]))
     print("skip directory2: ", directory)
     await ctx.send("track skipped")
 
