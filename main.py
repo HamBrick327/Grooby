@@ -170,7 +170,7 @@ async def play(ctx):
 
     while directory != []:
         name = os.path.join(queue, directory[0])
-        print("name2: ", name)
+        # print("name2: ", name)
         vc.play(disnake.FFmpegPCMAudio(name, executable=exe))
         await ctx.send(f"now playing **{directory[0].replace('.mp3', '')}**")
     
@@ -184,9 +184,10 @@ async def play(ctx):
                 os.remove(name) ## avoiding the bug that might be caused by the -skip command
                 directory = os.listdir(queue)
             elif looping:
+                ctx.send("looping the queue")
                 print("directory[1:]", directory[1:])
                 directory = directory[1:] + directory[0]
-                print(directory)
+                print("new directory: ", directory)
         except:
             pass
 
