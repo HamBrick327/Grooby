@@ -182,12 +182,11 @@ async def play(ctx):
             if not looping:
                 print(looping)
                 os.remove(name) ## avoiding the bug that might be caused by the -skip command
+                directory = os.listdir(queue)
             else:
                 directory = directory[1:] + directory[0]
         except:
             pass
-
-        directory = os.listdir(queue)
 
         print("directory2: ", os.listdir(queue))
         
