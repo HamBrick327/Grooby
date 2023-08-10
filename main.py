@@ -321,7 +321,9 @@ async def jace(ctx): ############### change
     clearQ()
     global vc
 
-    await vc.connect()
+    voice_channel = ctx.author.voice.channel
+    vc = await voice_channel.connect()    
+    
     if ctx.author.voice.channel != None:
         vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "jace.mp3"), executable=exe))
         
