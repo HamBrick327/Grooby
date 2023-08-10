@@ -72,6 +72,8 @@ bot = commands.Bot(
     intents=intents
 )
 
+looping = False
+
 @bot.event
 async def on_ready():
     print("bot is ready")
@@ -161,8 +163,6 @@ async def play(ctx):
     directory = os.listdir(queue)
 
     ## playing the generated mp3 file
-    print("name1: ", name)
-    print("directory: ", directory[0])
 
     while directory != []:
         name = os.path.join(queue, directory[0])
@@ -175,7 +175,8 @@ async def play(ctx):
             directory = os.listdir(queue)
 
         try:
-            os.remove(name) ## avoiding the bug that might be caused by the -skip command
+            if not looping:
+                os.remove(name) ## avoiding the bug that might be caused by the -skip command
         except:
             pass
 
@@ -324,5 +325,9 @@ async def jace(ctx):
 async def github(ctx):
     await ctx.send("https://github.com/HamBrick327/Grooby")
     return
+
+@bot.command()
+async def loop(ctx):
+    looping = True
 
 bot.run(token)
