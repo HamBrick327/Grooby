@@ -185,8 +185,7 @@ async def play(ctx):
                 os.remove(name) ## avoiding the bug that might be caused by the -skip command
                 directory = os.listdir(queue)
             elif looping:
-                ctx.send("looping the queue")
-                print("directory[1:]", directory[1:])
+                print("directory[1:]", (directory[1:] + directory[0]))
                 directory = directory[1:] + directory[0]
                 print("new directory: ", directory)
         except:
@@ -348,6 +347,7 @@ async def github(ctx):
 async def loop(ctx):
     global looping ########### I learnded something
     looping = True
+    await ctx.send("looping the queue")
 
 @bot.command()
 async def unloop(ctx):
