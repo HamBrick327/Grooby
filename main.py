@@ -23,6 +23,7 @@ TODO refactor to use the youtube API directly instead of uisng the pytube librar
 ^^ still need to do that but youtube doesn't like it ^^
 '''
 
+vc = 0
 
 if os.name == "posix":
     exe = 'ffmpeg'
@@ -85,6 +86,8 @@ async def join(ctx):
 
 @bot.command() ## plays bruh the same way the chatGTP code does, just with @bot instead of @client
 async def bruh(ctx):
+    global vc
+    
     await ctx.send("moment")
     voice_channel = ctx.author.voice.channel
     vc = await voice_channel.connect()
@@ -98,7 +101,7 @@ async def bruh(ctx):
 
 @bot.command() ## THE ACTUAL PLAY COMMAND 23:49 1/20/23
 async def play(ctx):
-
+    global vc
 
     if ctx.message.guild.voice_client == None:
         ## connect to the user's voice channel
@@ -117,11 +120,11 @@ async def play(ctx):
             os.system(f"copy {os.path.join(hardcoded, 'Megalovania.mp3')} {queue}")
         
         vc.play(disnake.FFmpegPCMAudio(os.path.join(queue, "Megalovania.mp3"), executable=exe))
-        await asyncio.sleep(.5)
+        await asyncio.sleep(.5) ##### remove this line through #################################
         await ctx.send("no")
         await vc.disconnect()
         os.remove(os.path.join(queue, "Megalovania.mp3"))
-        return
+        return ########### this line to actually have it play megalovania ################
     
         ## if the query is dsi shop theme because searching for it breaks bot
     if ctx.message.content.endswith("dsi shop theme"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
@@ -195,7 +198,8 @@ async def play(ctx):
 
 @bot.command() ## leaves voice channel
 async def leave(ctx):
-    vc = ctx.message.guild.voice_client
+    global vc
+
     await vc.disconnect()
     await ctx.send("left the vc")
     await asyncio.sleep(1)
@@ -203,7 +207,8 @@ async def leave(ctx):
 
 @bot.command() ## same as the leave
 async def stop(ctx):
-    vc = ctx.message.guild.voice_client
+    global vc
+
     await vc.disconnect()
     await ctx.send("left the vc")
     await asyncio.sleep(1)
@@ -211,7 +216,8 @@ async def stop(ctx):
 
 @bot.command() ## the same as the leave command
 async def begone(ctx):
-    vc = ctx.message.guild.voice_client
+    global vc
+
     await vc.disconnect()
     await ctx.send("left the vc")
     await asyncio.sleep(1)
@@ -308,7 +314,7 @@ async def up(ctx):
         await bot.change_presence(status=disnake.Status.online, activity=disnake.Game(name="Grooby is online!"))
 
 @bot.command()
-async def jace(ctx):
+async def jace(ctx): ############### change 
     clearQ()
 
     if ctx.author.voice.channel != None:
@@ -330,6 +336,13 @@ async def github(ctx):
 
 @bot.command()
 async def loop(ctx):
+    global looping ########### I learnded something
     looping = True
+
+@bot.command()
+async def loop(ctx):
+    global looping ####### This is important and I'm an idiot
+    looping = False
+
 
 bot.run(token)
