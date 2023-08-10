@@ -226,10 +226,9 @@ async def begone(ctx):
 @bot.command() ## creator credits credits
 async def credits(ctx):
     credited = True
+    global vc
 
     if ctx.author.voice.channel != None:
-        voice_channel = ctx.author.voice.channel
-        vc = await voice_channel.connect()
         vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "credits.mp3"), executable=exe))
         
         while vc.is_playing():
@@ -263,7 +262,8 @@ async def nowplaying(ctx):
 
 @bot.command()
 async def pause(ctx):
-    vc = ctx.message.guild.voice_client
+    global vc
+
     if type(vc) != None:
         try:
             vc.pause()
@@ -275,7 +275,8 @@ async def pause(ctx):
 
 @bot.command()
 async def resume(ctx):
-    vc = ctx.message.guild.voice_client
+    global vc
+
     if type(vc) != None:
         if vc.is_paused():
             vc.resume()
@@ -286,7 +287,8 @@ async def resume(ctx):
 
 @bot.command()
 async def skip(ctx):
-    vc = ctx.message.guild.voice_client
+    global vc
+
     directory = os.listdir(queue)
     directory = [os.path.join(os.getcwd(), "queue", f) for f in directory]
     directory.sort(key=lambda x: os.path.getmtime(x))
@@ -316,10 +318,10 @@ async def up(ctx):
 @bot.command()
 async def jace(ctx): ############### change 
     clearQ()
+    global vc
+
 
     if ctx.author.voice.channel != None:
-        voice_channel = ctx.author.voice.channel
-        vc = await voice_channel.connect()
         vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "jace.mp3"), executable=exe))
         
         while vc.is_playing():
