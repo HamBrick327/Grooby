@@ -120,6 +120,7 @@ async def play(ctx):
         await asyncio.sleep(.5)
         await ctx.send("no")
         await vc.disconnect()
+        os.remove(os.path.join(queue, "Megalovania.mp3"))
         return
     
         ## if the query is dsi shop theme because searching for it breaks bot
