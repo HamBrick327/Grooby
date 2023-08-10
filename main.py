@@ -186,6 +186,7 @@ async def play(ctx):
             elif looping:
                 print("directory[1:]", directory[1:])
                 directory = directory[1:] + directory[0]
+                print(directory)
         except:
             pass
 
