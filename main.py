@@ -228,6 +228,7 @@ async def credits(ctx):
     credited = True
     global vc
 
+    await vc.connect()
     if ctx.author.voice.channel != None:
         vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "credits.mp3"), executable=exe))
         
@@ -320,7 +321,7 @@ async def jace(ctx): ############### change
     clearQ()
     global vc
 
-
+    await vc.connect()
     if ctx.author.voice.channel != None:
         vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "jace.mp3"), executable=exe))
         
