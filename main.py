@@ -171,8 +171,9 @@ async def play(ctx):
     while directory != []:
         name = os.path.join(queue, directory[0])
         # print("name2: ", name)
-        vc.play(disnake.FFmpegPCMAudio(name, executable=exe))
-        await ctx.send(f"now playing **{directory[0].replace('.mp3', '')}**")
+        if not vc.is_playing():
+            vc.play(disnake.FFmpegPCMAudio(name, executable=exe))
+            await ctx.send(f"now playing **{directory[0].replace('.mp3', '')}**")
     
         while vc.is_playing() or vc.is_paused(): ## while the bot is playing audio
             await asyncio.sleep(1)
