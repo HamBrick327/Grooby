@@ -176,6 +176,7 @@ async def play(ctx):
 
         try:
             if not looping:
+                print(looping)
                 os.remove(name) ## avoiding the bug that might be caused by the -skip command
         except:
             pass
