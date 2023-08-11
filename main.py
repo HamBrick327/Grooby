@@ -33,7 +33,7 @@ elif os.name == "nt":
     os.chdir("Y:\\Dropbox\\Programming\\python\\chineseGroovy")
 
 cwd = os.getcwd()
-queue = os.path.join(os.getcwd(), "queue")
+queue = os.path.join(cwd, "queue")
 hardcoded = os.path.join(cwd, "hardcodedAudio")
 token = os.getenv('GROOBYTOKEN')
 
@@ -164,13 +164,15 @@ async def play(ctx):
     else:
         await ctx.send("actually give me a song to play")
 
-    directory = os.listdir(queue)
 
     ## playing the generated mp3 file
+
+    directory = os.listdir(queue)
 
     while directory != []:
         name = os.path.join(queue, directory[0])
         # print("name2: ", name)
+
         if not vc.is_playing():
             vc.play(disnake.FFmpegPCMAudio(name, executable=exe))
             await ctx.send(f"now playing **{directory[0].replace('.mp3', '')}**")
@@ -179,17 +181,16 @@ async def play(ctx):
             await asyncio.sleep(1)
             directory = os.listdir(queue)
 
-        try:
-            if not looping:
-                print(looping)
-                os.remove(name) ## avoiding the bug that might be caused by the -skip command
-                directory = os.listdir(queue)
-            elif looping:
-                print("directory[1:]", (directory[1:] + directory[0]))
-                directory = directory[1:] + directory[0]
-                print("new directory: ", directory)
-        except:
-            pass
+        global looping
+        print(looping)
+        if not looping: ## screw you fancy boolean things, I'm just gonna do if looping == True or False
+            os.remove(name)
+            directory = os.listdir(queue)
+        if looping:
+            directory.append(directory[0])
+            print(directory)
+            directory = directory[1:]
+            print("new directory: ", directory)
 
         print("directory2: ", directory)
         
