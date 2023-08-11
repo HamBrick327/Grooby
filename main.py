@@ -79,12 +79,7 @@ looping = False
 async def on_ready():
     print("bot is ready")
 
-@bot.command() ## has the bot join the user's voice channel
-async def join(ctx):
-    ctx.send("-join is no longer a valid command, use -play <song name> instead")
-
-
-@bot.command() ## plays bruh the same way the chatGTP code does, just with @bot instead of @client
+@bot.command() ## plays bruh the same way the chatGPT code does, just with @bot instead of @client
 async def bruh(ctx):
     global vc
     
@@ -172,27 +167,28 @@ async def play(ctx):
     while directory != []:
         name = os.path.join(queue, directory[0])
         # print("name2: ", name)
-
+        global looping
         if not vc.is_playing():
             vc.play(disnake.FFmpegPCMAudio(name, executable=exe))
             await ctx.send(f"now playing **{directory[0].replace('.mp3', '')}**")
     
         while vc.is_playing() or vc.is_paused(): ## while the bot is playing audio
             await asyncio.sleep(1)
-            directory = os.listdir(queue)
+            if not looping:
+                directory = os.listdir(queue)
 
-        global looping
+
         print(looping)
         if not looping: ## screw you fancy boolean things, I'm just gonna do if looping == True or False
             os.remove(name)
             directory = os.listdir(queue)
+
         if looping:
             directory.append(directory[0])
-            print(directory)
+            print("halfway through: ", directory)
             directory = directory[1:]
             print("new directory: ", directory)
 
-        print("directory2: ", directory)
         
     # os.remove(name + ".mp3")
     directory = os.listdir(queue)
@@ -210,7 +206,7 @@ async def leave(ctx):
     await asyncio.sleep(1)
     clearQ()
 
-@bot.command() ## same as the leave
+@bot.command() ## same as the leave command
 async def stop(ctx):
     global vc
 
@@ -251,14 +247,14 @@ async def credits(ctx):
         vc.stop()
         await vc.disconnect()
 
-@bot.command(name="clear", aliases=["clearQ", "clearQueue"]) ## clear queue
+@bot.command(name="clear", aliases=["clearQ", "clearQueue"]) ## clears the queue
 async def clear(ctx):
     if ctx.author.voice.channel == ctx.message.guild.voice_client:
         clearQ()
     await ctx.send("queue cleared")
     
 @bot.command()
-async def nowplaying(ctx):
+async def nowplaying(ctx): ## send a message telling the song that is currently playing
     directory = os.listdir(queue)
     directory = [os.path.join(os.getcwd(), "queue", f) for f in directory]
     directory.sort(key=lambda x: os.path.getmtime(x))
@@ -267,7 +263,7 @@ async def nowplaying(ctx):
     # await ctx.send(f"now playing **{directory[0].replace((queue + "\\"), '').replace('.mp3', '')}**")
 
 @bot.command()
-async def pause(ctx):
+async def pause(ctx): ## pauses the song if it is playing
     global vc
 
     if type(vc) != None:
@@ -280,7 +276,7 @@ async def pause(ctx):
         await ctx.send("not in vc")
 
 @bot.command()
-async def resume(ctx):
+async def resume(ctx): ## resumes the current song if it is paused
     global vc
 
     if type(vc) != None:
@@ -292,7 +288,7 @@ async def resume(ctx):
         await ctx.send("not in vc")
 
 @bot.command()
-async def skip(ctx):
+async def skip(ctx): ## skips the song that is playing
     global vc
     global looping
 
@@ -308,7 +304,7 @@ async def skip(ctx):
     await ctx.send("track skipped")
 
 @bot.command()
-async def down(ctx):
+async def down(ctx): ## sets the bot status to say it is down :(
     print(ctx.message.author)
     print(ctx.message.author.id)
     if str(ctx.message.author.id) == "330520485463064597":
@@ -316,7 +312,7 @@ async def down(ctx):
         await bot.change_presence(status=disnake.Status.idle, activity=disnake.Game(name="Grooby is down :("))
 
 @bot.command()
-async def up(ctx):
+async def up(ctx): ## sets the bot status to say it is up
     print(ctx.message.author)
     print(ctx.message.author.id)
     if str(ctx.message.author.id) == "330520485463064597":
@@ -347,7 +343,7 @@ async def github(ctx):
     return
 
 @bot.command()
-async def loop(ctx):
+async def loop(ctx): ## loops the queue
     global looping ########### I learnded something
     looping = True
     await ctx.send("looping the queue")
@@ -356,6 +352,12 @@ async def loop(ctx):
 async def unloop(ctx):
     global looping ####### This is important and I'm an idiot
     looping = False
+
+@bot.command()
+async def luke(ctx): ## legit the same as the loop command
+    global looping
+    looping = True
+    await ctx.send("luking the queue")
 
 
 bot.run(token)
