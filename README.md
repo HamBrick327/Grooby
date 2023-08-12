@@ -23,6 +23,8 @@ main.py assumes you have python3 set as a system path for running your python ex
 
 I had a bug where the mediafire link might've expired or became otherwise unusable, might be fixed, might be something I have to fix in the futute for anyone who wants to host this scuffed bot themselves instead of any of the actual good ones
 
+### in the pytube library installation change line 30 of cipher.py from `var_regex = re.compile(r"^\w+\W")` to `var_regex = re.compile(r"^\$*\w+\W")` as per [this stackoverflow post](https://stackoverflow.com/questions/70776558/pytube-exceptions-regexmatcherror-init-could-not-find-match-for-w-w) and [this github issue](https://github.com/pytube/pytube/issues/1199) this fixes the random bug that I was getting every once in a while
+
 ## testing changes is for losers
 
 
