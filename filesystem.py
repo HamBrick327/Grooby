@@ -6,7 +6,7 @@ import os
 url = "https://www.mediafire.com/file/tp6eult71hcsxwi/hardcodedAudio.zip/file"
 
 ## check if ./queue directory exists, if not, create it
-if not os.path.exists("./queue"):
+if not os.path.exists("./queue") and not os.path.exists("./hardcoded"):
     os.mkdir("./queue")
     os.mkdir("./hardcodedAudio")
     request = requests.get(url)
