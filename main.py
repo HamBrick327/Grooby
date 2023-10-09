@@ -125,7 +125,7 @@ async def play(ctx):
     if ctx.message.content.endswith("dsi shop theme"): ## IF YOU CHANGE THE BOT PREFIX CHANGE THE HARD CODED TEXT
 
         if os.name == 'posix':
-            os.system(f"cp {os.path.join(hardcoded, 'Nintendo DSi Shop Theme 10 HOUR LOOP.mp3')} {queue}")
+            os.system(f"cp {os.path.join(hardcoded,'Nintendo DSi Shop Theme 10 HOUR LOOP.mp3')} {queue}")
         elif os.name == 'nt':
             os.system(f"copy {os.path.join(hardcoded, 'Nintendo DSi Shop Theme 10 HOUR LOOP.mp3')} {queue}")
 

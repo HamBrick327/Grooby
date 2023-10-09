@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import os
 
-url = "https://www.mediafire.com/file/ow8hzyoevukxwkj/hardcodedAudio.zip/file"
+url = "https://www.mediafire.com/file/tp6eult71hcsxwi/hardcodedAudio.zip/file"
 
 ## check if ./queue directory exists, if not, create it
 if not os.path.exists("./queue"):
