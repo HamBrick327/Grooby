@@ -1,5 +1,6 @@
 #!/bin/env python3
 import requests
+import shutil
 from bs4 import BeautifulSoup
 import os
 
@@ -24,3 +25,8 @@ if not os.path.exists("./queue") and not os.path.exists("./hardcoded"):
 
     os.system("unzip hardcodedAudio.zip -d ./hardcodedAudio")
     os.remove("./hardcodedAudio.zip")
+
+## fixing windows zip files being werid because I'm lazy
+if len(os.listdir()) == 1:
+    shutil.move(os.path.join("./hardcodedAudio", "hardcodedAudio"), "./hardcodedAudio")
+    os.rmdir(os.path.join("./hardcodedAudio", "hardcodedAudio"))
