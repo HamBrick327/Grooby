@@ -16,8 +16,7 @@ TODO add reactions to avoid spam (maybe)
 
 
 BUG doesn't remove the last song from queue
-BUG thinks it's in a vc when it is, in fact, not
-^^ I could just check and update the boolean on every command, but that would be a lot of work
+BUG doesn't skip properly, probably sorting queue by alphabet instead of age, need to fix that
 
 TODO refactor to use the youtube API directly instead of uisng the pytube library *pain*
 ^^ still need to do that but youtube doesn't like it ^^
