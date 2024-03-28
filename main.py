@@ -34,7 +34,7 @@ elif os.name == "nt":
 
 cwd = os.getcwd()
 queue = os.path.join(cwd, "queue")
-hardcoded = os.path.join(cwd, "hardcodedAudio")
+hardcoded = os.path.join(cwd, "hardcodedAudio", "hardcodedAudio")
 token = os.getenv('GROOBYTOKEN')
 
 ### create the filesystem on first boot if the ./queue directory does not exist
@@ -87,7 +87,7 @@ async def bruh(ctx):
     voice_channel = ctx.author.voice.channel
     vc = await voice_channel.connect()
     
-    vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "bruh.mp3"), executable=exe))
+    vc.play(disnake.FFmpegPCMAudio(os.path.join(hardcoded, "bruh.mp3"), executable=exe)) ## /home/hollajam000/grooby/hardcodedAudio
 
     while vc.is_playing():
         await asyncio.sleep(1)
